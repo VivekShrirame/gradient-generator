@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import randomColor from "randomcolor";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { IoCopyOutline } from "react-icons/io5";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import randomcolor from "randomcolor";
 
 const Gradient = () => {
-  const [color1, setColor1] = useState(randomColor());
-  const [color2, setColor2] = useState(randomColor());
+  const [color1, setColor1] = useState(randomcolor());
+  const [color2, setColor2] = useState(randomcolor());
+  const [output, setOutput] = useState("");
 
   useEffect(() => {
     const gradient = `linear-gradient(to right, ${color1}, ${color2})`;
     document.body.style.background = gradient;
+    setOutput(`background: ${gradient}`);
   }, [color1, color2]);
 
   const handleChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,13 +26,13 @@ const Gradient = () => {
   };
 
   const handleRandomClick = () => {
-    setColor1(randomColor());
-    setColor2(randomColor());
+    setColor1(randomcolor());
+    setColor2(randomcolor());
   };
 
   return (
     <div className="gradient">
-      <h1>Create your own gradient!</h1>
+      <h1>Create you own gradient!</h1>
       <div className="colorPicker">
         <input
           type="color"
@@ -44,6 +50,14 @@ const Gradient = () => {
       <button className="btnRandom" onClick={handleRandomClick}>
         Generate Random gradient!
       </button>
+      <div className="output">
+        <SyntaxHighlighter language="css" style={arduinoLight}>
+          {output}
+        </SyntaxHighlighter>
+        <CopyToClipboard text={`background: ${output}`}>
+          <IoCopyOutline style={{ cursor: "pointer", fontSize: "25px" }} />
+        </CopyToClipboard>
+      </div>
     </div>
   );
 };
